@@ -150,7 +150,11 @@ Reimport the Northwind database into PostgreSQL using pgAdmin. This is the same 
   </details>
 
 ```SQL
-
+    SELECT count(o.order_id), c.company_name
+    FROM orders o JOIN customers c
+    ON c.customer_id = o.customer_id
+    GROUP BY c.company_name
+    ORDER BY c.company_name
 ```
 
 * [ ] ***list customers by contact name and the number of orders per contact name. Sort the list by the number of orders in descending order. _Jose Pavarotti_ should be at the top with 31 orders followed by _Roland Mendal_ with 30 orders. Last should be _Francisco Chang_ with 1 order***
@@ -161,7 +165,11 @@ Reimport the Northwind database into PostgreSQL using pgAdmin. This is the same 
   </details>
 
 ```SQL
-
+    SELECT count(o.order_id), c.contact_name
+    FROM orders o JOIN customers c
+    ON c.customer_id = o.customer_id
+    GROUP BY c.contact_name
+    ORDER BY count(o.order_id) DESC
 ```
 
 * [ ] ***list orders grouped by customer's city showing the number of orders per city. Returns 69 Records with _Aachen_ showing 6 orders and _Albuquerque_ showing 18 orders***
@@ -172,7 +180,11 @@ Reimport the Northwind database into PostgreSQL using pgAdmin. This is the same 
   </details>
 
 ```SQL
-
+    SELECT count(o.order_id), c.contact_name
+    FROM orders o JOIN customers c
+    ON c.customer_id = o.customer_id
+    GROUP BY c.contact_name
+    ORDER BY count(o.order_id) DESC
 ```
 
 ## Data Normalization
@@ -192,53 +204,52 @@ Below are some empty tables to be used to normalize the database
 * Not all of the cells will contain data in the final solution
 * Feel free to edit these tables as necessary
 
-Table Name:
+Table Name:Rough Organization
+| ID | Person Name|  Pet Name  | Pet Type | Fenced Yard | City Dweller |    
+|----|------------|------------|----------|-------------|--------------|------------|------------|------------|
+|  1 |    Jane    |  Ellie     |  Dog     |     NO      |  YES         |            |            |            |
+|  1 |    Jane    |  Tiger     |  Cat     |     NO      |  YES         |            |            |            |
+|  1 |    Jane    |  Toby      |  Turtle  |     NO      |  YES         |            |            |            |
+|  2 |    Bob     |  Joe       |  Horse   |     NO      |  NO          |            |            |            |
+|  3 |    Sam     |  Ginger    |  Dog     |     YES     |  NO          |            |            |            |
+|  3 |    Sam     | Miss Kitty |  Cat     |     YES     |  NO          |            |            |            |
+|  3 |    Sam     |  Bubble    |  Fish    |     YES     |  NO          |            |            |            |
 
-|            |            |            |            |            |            |            |            |            |
-|------------|------------|------------|------------|------------|------------|------------|------------|------------|
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
+Table Name: Persons
 
-Table Name:
+|  Person ID | Person Name | Fenced Yard | City Dweller |            |            |            |            |            |
+|------------|-------------|-------------|--------------|------------|------------|------------|------------|------------|
+|     1      |  Jane       |     NO      |    YES       |            |            |            |            |            |
+|     2      |  Bob        |     NO      |    NO        |            |            |            |            |            |
+|     3      |  Sam        |     YES     |    NO        |            |            |            |            |            |
+|            |             |             |              |            |            |            |            |            |
+|            |             |             |              |            |            |            |            |            |
+|            |             |             |              |            |            |            |            |            |
+|            |             |             |              |            |            |            |            |            |
 
-|            |            |            |            |            |            |            |            |            |
-|------------|------------|------------|------------|------------|------------|------------|------------|------------|
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
+Table Name: Pets
 
-Table Name:
+| Person ID   | Pet ID      | Pet Name   |            |            |            |            |            |            |
+|-------------|-------------|------------|------------|------------|------------|------------|------------|------------|
+|    1        |    1        | Ellie      |            |            |            |            |            |            |
+|    1        |    2        | Tiger      |            |            |            |            |            |            |
+|    1        |    3        | Toby       |            |            |            |            |            |            |
+|    2        |    4        | Joe        |            |            |            |            |            |            |
+|    3        |    5        | Ginger     |            |            |            |            |            |            |
+|    3        |    6        | Miss Kitty |            |            |            |            |            |            |
+|    3        |    7        | Bubble     |            |            |            |            |            |            |
 
-|            |            |            |            |            |            |            |            |            |
-|------------|------------|------------|------------|------------|------------|------------|------------|------------|
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
+Table Name: Pet Types
 
-Table Name:
-
-|            |            |            |            |            |            |            |            |            |
-|------------|------------|------------|------------|------------|------------|------------|------------|------------|
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
+|  Pet ID     |  Pet Type   |            |            |            |            |            |            |            |
+|-------------|-------------|------------|------------|------------|------------|------------|------------|------------|
+|    1        |   Dog      |            |            |            |            |            |            |            |
+|    2        |   Cat      |            |            |            |            |            |            |            |
+|    3        |   Turtle   |            |            |            |            |            |            |            |
+|    4        |   Horse    |            |            |            |            |            |            |            |
+|    5        |   Dog      |            |            |            |            |            |            |            |
+|    6        |   Cat      |            |            |            |            |            |            |            |
+|    7        |   Fish     |            |            |            |            |            |            |            |
 
 ---
 
