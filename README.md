@@ -92,7 +92,7 @@ Reimport the Northwind database into PostgreSQL using pgAdmin. This is the same 
 ```SQL
     SELECT company_name 
     FROM suppliers
-    WHERE Length(company_name) > 20
+    WHERE CHAR_LENGTH(company_name) > 20
 ```
 
 * [ ] ***find all customers that include the word 'MARKET' in the contact title. Should return 19 records***
