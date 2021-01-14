@@ -252,6 +252,7 @@ Table Name: Pet Types
 |    7        |   Fish     |            |            |            |            |            |            |            |
 
 ---
+See PDF for 3NF Normalization 
 
 ### Stretch Goals
 
